@@ -1,0 +1,443 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Montserrat', sans-serif;
+}
+
+body {
+    background: url("../jpg/task/TaskBackground.jpg") no-repeat fixed;
+    background-size: cover;
+    overflow: auto;
+}
+
+.wrapper {
+    position: relative;
+    min-height: 100vh;
+    background: rgba(39, 39, 39, 0.4);
+    overflow-y: auto; /* Включение вертикальной прокрутки */
+}
+
+/* Стили для полосы прокрутки */
+::-webkit-scrollbar {
+    width: 10px; /* Ширина полосы прокрутки */
+}
+
+/* Стили для трека полосы прокрутки */
+::-webkit-scrollbar-track {
+    background: linear-gradient(to bottom, rgba(66, 5, 39, 0.8), rgba(0, 0, 0, 0.6))
+}
+
+/* Стили для ползунка полосы прокрутки */
+::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.5); /* Цвет ползунка */
+    border-radius: 10px; /* Закругляем углы ползунка */
+}
+
+/* Опционально: Стили при наведении на ползунок полосы прокрутки */
+::-webkit-scrollbar-thumb:hover {
+    background: rgba(0, 0, 0, 0.7); /* Измененный цвет ползунка при наведении */
+}
+
+
+.nav {
+    position: fixed;
+    top: 0;
+    display: flex;
+    justify-content: space-around;
+    align-items: center; /* Добавлено для выравнивания по вертикали */
+    width: 100%;
+    height: 100px;
+    line-height: 100px;
+    background: linear-gradient(rgba(39, 39, 39, 0.6), transparent);
+    z-index: 100;
+}
+
+.nav-logo {
+    position: relative; /* Добавлено */
+    z-index: 1; /* Добавлено */
+}
+
+.nav-logo p {
+    color: white;
+    font-size: 25px;
+    font-weight: 600;
+}
+
+.nav-button i {
+    margin-top: 33px;
+    font-size: 30px;
+    color: #fff;
+    padding: 10px;
+    background: rgba(255, 255, 255, 0.2); /* Возможно, проблема здесь */
+    border-radius: 50%;
+    cursor: pointer;
+    transition: .3s;
+}
+
+.nav-button i:hover {
+    background: rgba(255, 255, 255, 0.15);
+}
+.nav-button {
+    z-index: 4;
+}
+
+.nav-menu-btn i {
+    margin-top: 33px;
+    font-size: 30px;
+    color: #fff;
+    padding: 10px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    cursor: pointer;
+    transition: .3s;
+}
+
+.nav-menu-btn i:hover {
+    background: rgba(255, 255, 255, 0.15);
+}
+.nav-menu-btn {
+    z-index: 1;
+}
+
+.menu-title {
+    text-align: center;
+    font-weight: bold;
+    color: #fff;
+    margin-bottom: 10px;
+}
+
+.nav-menu {
+    position: absolute;
+    top: 119%;
+    left: 0;
+    min-width: 600px;
+    max-width: 600px;
+    max-height: 625px; /* Примерное значение, которое нужно подстроить под ваши потребности */
+    overflow-y: auto; /* Включаем вертикальную прокрутку при необходимости */
+    display: none;
+    background: rgba(39, 39, 39, 0.6);
+    padding: 15px 0;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
+    z-index: 99;
+    border-bottom-left-radius: 20px;
+    border-bottom-right-radius: 20px;
+    backdrop-filter: blur(5px);
+}
+
+
+.nav-menu ul {
+    display: flex;
+    flex-direction: column;
+}
+
+.nav-menu ul li {
+    list-style-type: none;
+}
+
+.nav-menu ul li .link {
+    text-decoration: none;
+    font-weight: 500;
+    color: #fff;
+    padding-bottom: 15px;
+    margin: 0 25px;
+}
+
+.nav-menu .btn {
+    width: 130px;
+    height: 40px;
+    font-weight: 500;
+    background: rgba(255, 255, 255, 0.4);
+    border: none;
+    border-radius: 30px;
+    cursor: pointer;
+    transition: .3s ease;
+}
+
+.nav-menu ul.horizontal-menu {
+    display: flex;
+    flex-direction: row; /* Изменено на горизонтальное расположение */
+    justify-content: center;
+    margin-top: -50px;
+}
+
+.nav-menu ul.horizontal-menu li {
+    list-style-type: none;
+}
+
+
+.nav-menu ul.horizontal-menu li .link {
+    text-decoration: none;
+    font-weight: 500;
+    color: #fff;
+    padding: 10px 20px; /* Изменено для кнопок */
+    border-radius: 30px; /* Изменено для кнопок */
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.nav-menu ul.horizontal-menu li .link:hover {
+    background-color: rgba(255, 255, 255, 0.3);
+}
+
+/* Группы в меню */
+
+.group-item {
+    position: relative;
+    border: 1px solid #ccc; /* рамка вокруг группы */
+    margin-bottom: 20px; /* отступ между группами */
+    display: flex; /* элементы в строку */
+    padding: 10px; /* добавляем отступ внутри блока */
+    border-radius: 50px; /* закругляем углы блока */
+    margin-left: 15%;
+    width: 70%;
+    height: 60px;
+    transition: height 0.3s ease; /* добавляем анимацию изменения высоты */
+}
+
+.group-header {
+    display: flex;
+    justify-content: space-between;
+    position: fixed;
+    cursor: pointer; /* Добавлено для указания на возможность клика */
+    margin-top: -33px;
+}
+
+.group-members {
+    display: none;
+    position: absolute; /* Позиционируем блок абсолютно */
+    top: 70px;
+    left: 50px; /* Выравниваем блок по левому краю */
+    width: 100%; /* Занимает всю ширину родителя */
+}
+
+.group-members::before {
+    content: "";
+    position: absolute;
+    top: -10px;
+    left: -50px;
+    width: 100%;
+    height: 1px;
+    background-color: #ccc;
+}
+
+.addgroup-button {
+    position: absolute;
+    width: 30px;
+    height: 30px;
+    border: none;
+    outline: none;
+    border-radius: 30px;
+    background-color: rgba(255, 255, 255, 0); /* Прозрачный белый цвет */
+    box-shadow:  0 0 10px rgba(0, 0, 0, .5);
+    cursor: pointer;
+    font-size: 22px;
+    color: #ffffff;
+    font-weight: 600;
+    margin-top: 10px;
+}
+
+.group-members ul {
+    line-height: 3; /* Устанавливаем желаемый интерлиньяж */
+}
+.group-members h4 {
+    line-height: 2; /* Устанавливаем желаемый интерлиньяж */
+}
+
+.group-link {
+    text-decoration: none;
+    margin-top: 2px;
+    margin-left: 30px; /* добавляем отступ слева для ссылки */
+    color: black; /* Изменяем цвет текста на черный */
+    font-weight: bold; /* Добавляем жирность */
+}
+
+.group-buttons {
+    margin-left: 130px;
+    margin-bottom: 100px;
+}
+
+
+.group-button {
+    width: 40px;
+    height: 40px;
+    background: #fff;
+    border: none;
+    outline: none;
+    border-radius: 40px;
+    box-shadow:  0 0 10px rgba(0, 0, 0, .1);
+    cursor: pointer;
+    font-size: 25px;
+    color: #333;
+    font-weight: 600;
+    margin-top: 32px;
+    margin-left: 10px; /* уменьшаем расстояние между кнопками и ссылкой */
+}
+
+.btn:hover {
+    background: rgba(255, 255, 255, 0.3);
+}
+
+.btn.white-btn {
+    background: rgba(255, 255, 255, 0.7);
+}
+
+.btn.white-btn:hover {
+    background: rgba(255, 255, 255, 0.5);
+}
+
+/* Задачи */
+
+.task-columns {
+    margin-top: 120px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.task-column {
+    width: 33%;
+    padding: 20px;
+    max-width: auto;
+    border-bottom-left-radius: 20px;
+    border-bottom-right-radius: 20px;
+    box-sizing: border-box;
+    background: rgba(39, 39, 39, 0.2);
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(5px);
+    transition: height 0.1s ease; /* Добавлена плавная анимация */
+}
+
+
+.task-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.task-button {
+    position: absolute;
+    width: 30px;
+    height: 30px;
+    border: none;
+    outline: none;
+    border-radius: 10px;
+    background-color: rgba(255, 255, 255, .5); /* Прозрачный белый цвет */
+    box-shadow:  0 0 10px rgba(0, 0, 0, .5);
+    cursor: pointer;
+    font-size: 22px;
+    color: #ffffff;
+    font-weight: 600;
+}
+
+.task-btn-container{
+    position: absolute;
+    top: 10px;
+    right: 80px;
+    bottom: 100%;
+}
+
+.task-button-submit {
+    position: absolute;
+    right: 10px;
+    bottom: 10px;
+    width: 150px;
+    height: 25px;
+    border: none;
+    outline: none;
+    border-radius: 10px;
+    background-color: rgba(255, 255, 255, .5) !important;
+    box-shadow: 0 0 10px rgba(0, 0, 0, .5) !important;
+    cursor: pointer;
+    font-size: 10px;
+    color: #ffffff !important;
+    font-weight: 600;
+}
+
+.task-info {
+    position: relative;
+    border: 1px solid #000000;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+    border-top-right-radius: 10px;
+    margin-top: 0;
+    padding: 10px;
+    height: auto;
+    background-color: rgba(39, 39, 39, 0.2);
+    box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(500px);
+    color: #ffffff;
+}
+
+.task {
+    margin-top: 25px;
+    margin-bottom: -20px;
+    border-radius: 10px;
+    padding: 10px;
+}
+
+.task-info span {
+    line-height: 2; /* Устанавливаем желаемый интерлиньяж */
+}
+
+.user-name {
+    display: inline-block;
+    border: 1px solid #030303;
+    padding: 5px 10px;
+    border-radius: 10px;
+    background-color: rgba(250, 134, 39, 0.1);
+    cursor: pointer;
+    color: #ffffff; /* неоновый цвет */
+    text-shadow: 0px 0px 10px #050505; /* размытие текста */
+    font-weight: bold;
+}
+
+.task-text {
+    /* Другие стили */
+    height: auto; /* Автоопределение высоты */
+    max-height: 800px; /* Максимальная высота блока */
+    overflow: auto; /* Включение прокрутки при необходимости */
+}
+
+.task-text__label {
+    overflow-wrap: break-word;
+    font-weight: bold;
+}
+
+.task-text__content {
+    display: flex;
+    overflow-wrap: break-word;
+    align-items: center;
+}
+
+.task-text__content span {
+    flex-grow: 1;
+}
+
+.task-details {
+    margin-top: 10px;
+    border-top: 1px solid #ccc;
+    padding-top: 10px;
+}
+
+.task h2 {
+    margin-bottom: 10px;
+}
+
+.task form {
+    display: inline-block;
+}
+
+/* Стили для экранов Full HD (1920px) и меньше */
+@media screen and (max-width: 1920px) {
+    .nav-menu {
+        width: 30%; /* Ширина меню для Full HD */
+    }
+}
+
+/* Стили для экранов 2K (2560px) и больше */
+@media screen and (min-width: 2560px) {
+    .nav-menu {
+        width: 25%; /* Ширина меню для 2K */
+    }
+}

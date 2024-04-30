@@ -1,0 +1,413 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Montserrat', sans-serif;
+}
+
+body {
+    background: url("../jpg/index/images1.jpg");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    overflow: hidden;
+}
+
+.wrapper {
+    position: relative;
+    height: auto;
+    min-height: 110vh;
+    background: rgba(39, 39, 39, 0.4);
+}
+
+.nav {
+    position: fixed;
+    top: 0;
+    display: flex;
+    justify-content: space-around;
+    width: 100%;
+    height: 100px;
+    line-height: 100px;
+    background: linear-gradient(rgba(39, 39, 39, 0.6), transparent);
+    z-index: 100;
+}
+
+.nav-logo p {
+    color: white;
+    font-size: 25px;
+    font-weight: 600;
+}
+
+.nav-menu ul {
+    display: flex;
+}
+
+.nav-menu ul li {
+    list-style-type: none;
+}
+
+.nav-menu ul li .link {
+    text-decoration: none;
+    font-weight: 500;
+    color: #fff;
+    padding-bottom: 15px;
+    margin: 0 25px;
+}
+
+.link:hover,
+.active {
+    border-bottom: 2px solid #fff;
+}
+
+.nav-button .btn {
+    width: 130px;
+    height: 40px;
+    font-weight: 500;
+    background: rgba(255, 255, 255, 0.4);
+    border: none;
+    border-radius: 30px;
+    cursor: pointer;
+    transition: .3s ease;
+}
+
+.btn:hover {
+    background: rgba(255, 255, 255, 0.3);
+}
+
+.btn.white-btn {
+    background: rgba(255, 255, 255, 0.7);
+}
+
+.btn.btn.white-btn:hover {
+    background: rgba(255, 255, 255, 0.5);
+}
+
+.nav-menu-btn {
+    display: none;
+}
+
+.form-box {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 512px;
+    height: 420px;
+    overflow: hidden;
+    z-index: 2;
+}
+
+.top span {
+    color: #fff;
+    font-size: small;
+    padding: 10px 0;
+    display: flex;
+    justify-content: center;
+}
+
+.top span a {
+    font-weight: 500;
+    color: #fff;
+    margin-left: 5px;
+}
+
+header {
+    color: #fff;
+    font-size: 30px;
+    text-align: center;
+    padding: 10px 0 30px 0;
+}
+
+.two-forms {
+    display: flex;
+    gap: 10px;
+}
+
+.input-field {
+    font-size: 15px;
+    background: rgba(255, 255, 255, 0.2);
+    color: #fff;
+    height: 50px;
+    width: 100%;
+    padding: 0 10px 0 45px;
+    border: none;
+    border-radius: 30px;
+    outline: none;
+    transition: .2s ease;
+}
+
+.input-field:hover,
+.input-field:focus {
+    background: rgba(255, 255, 255, 0.25);
+}
+
+::-webkit-input-placeholder {
+    color: #fff;
+}
+
+.input-box i {
+    position: relative;
+    top: -35px;
+    left: 17px;
+    color: #fff;
+}
+
+.submit {
+    font-size: 15px;
+    font-weight: 500;
+    color: black;
+    height: 45px;
+    width: 100%;
+    border: none;
+    border-radius: 30px;
+    outline: none;
+    background: rgba(255, 255, 255, 0.7);
+    cursor: pointer;
+    transition: .3s ease-in-out;
+}
+
+.submit:hover {
+    background: rgba(255, 255, 255, 0.5);
+    box-shadow: 1px 5px 7px 1px rgba(0, 0, 0, 0.2);
+}
+
+.two-col {
+    display: flex;
+    justify-content: space-between;
+    color: #fff;
+    font-size: small;
+    margin-top: 10px;
+}
+
+.two-col .one {
+    display: flex;
+    gap: 5px;
+}
+
+.two label a {
+    text-decoration: none;
+    color: #fff;
+}
+
+.two label a:hover {
+    text-decoration: underline;
+}
+
+#home,
+#services,
+#about {
+    height: 100vh; /* Занимает всю высоту видимой области браузера */
+    display: flex; /* Размещает содержимое по вертикали */
+    align-items: center; /* Выравнивает содержимое по центру по вертикали */
+    justify-content: center; /* Выравнивает содержимое по центру по горизонтали */
+    position: relative;
+    top: 0; /* Блоки начинаются сразу после предыдущего */
+    width: 100%; /* Занимают всю доступную ширину */
+    padding: 100px 0; /* Пространство вокруг текста */
+    margin: 20px 0; /* Добавляем отступы между блоками */
+    border-radius: 10px; /* Закругляем углы блоков */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Добавляем тень */
+}
+
+#home {
+    width: 40%;
+    margin-left: 10%; /* Отступ слева на 10% */
+    border: none; /* Убираем границу */
+    box-shadow: none; /* Убираем тень */
+}
+
+#home .section-content {
+    transition: none;
+}
+
+#home .section-content h1 {
+    font-size: 38px;
+}
+
+#home .section-content p {
+    font-size: 25px;
+}
+
+#home .nav-button {
+    position: absolute;
+    bottom: 13%; /* Расположение относительно нижнего края */
+    left: 0; /* Расположение относительно левого края */
+}
+
+#home .nav-button .btn {
+    text-align: center;
+    padding: 10px 30px; /* Увеличиваем внутренний отступ кнопки */
+    width: 200px; /* Увеличиваем ширину кнопки */
+    height: 50px; /* Увеличиваем высоту кнопки */
+}
+
+#services {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: #fff;
+}
+
+#services h2 {
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 20px;
+}
+
+#services p {
+    font-size: 15px;
+    line-height: 1.6;
+    margin-bottom: 30px;
+}
+
+#services h2:first-child {
+    margin-top: 0;
+}
+
+#services p:last-child {
+    margin-bottom: 0;
+}
+
+#services .section-content {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+
+
+.images-text-wrapper {
+    position: relative; /* Делаем родительский блок позиционируемым */
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    margin-bottom: 20px;
+}
+
+.image {
+    width: 220px;
+    height: auto;
+    left: 70%; /* Положение по горизонтали по центру */
+    transform: translateX(80%); /* Центрируем изображение относительно его собственной ширины */
+    margin-top: 120px;
+    margin-bottom: 20px;
+}
+
+
+#about {
+    background-color: rgba(0, 0, 0, 0.5);
+    color: #fff;
+}
+
+#about h2 {
+    font-size: 24px;
+    font-weight: 600;
+    margin-bottom: 20px;
+}
+
+#about p {
+    font-size: 18px;
+    line-height: 1.6;
+    margin-bottom: 30px;
+}
+
+#about h2:first-child {
+    margin-top: 0;
+}
+
+#about p:last-child {
+    margin-bottom: 0;
+}
+
+.section-content {
+    opacity: 0; /* Начальная прозрачность */
+    transition: opacity 0.5s ease-in-out; /* Анимация появления */
+    max-width: 800px; /* Устанавливаем максимальную ширину контейнера текста */
+    margin: 0 auto; /* Центрируем контейнер по горизонтали */
+}
+
+.separator {
+    width: 100%;
+    height: 2px;
+    background-color: rgba(255, 255, 255, 0.5);
+    margin: 40px 0; /* Отступы между разделителями */
+}
+
+@media only screen and (min-width: 1500px) {
+    .section-content {
+        max-width: 1000px; /* Увеличиваем максимальную ширину контейнера для больших экранов */
+    }
+}
+
+@media only screen and (max-width: 786px) {
+    #home {
+        width: 80%; /* Уменьшаем ширину блока #home для меньших экранов */
+    }
+
+    #home .section-content h1 {
+        font-size: 6vw; /* Устанавливаем размер заголовка относительно ширины окна */
+    }
+
+    #home .section-content p {
+        font-size: 3vw; /* Устанавливаем размер текста относительно ширины окна */
+    }
+
+    #home .nav-button .btn {
+        width: 40%; /* Устанавливаем ширину кнопки относительно ширины блока #home */
+        font-size: 3vw; /* Устанавливаем размер текста кнопки относительно ширины окна */
+    }
+
+    .nav-button {
+        display: none; /* Скрываем кнопку на меньших экранах */
+    }
+
+    .nav-menu.responsive {
+        top: 100px;
+    }
+
+    .nav-menu {
+        position: absolute;
+        top: -800px;
+        display: flex;
+        justify-content: center;
+        background: rgba(255, 255, 255, 0.2);
+        width: 100%;
+        height: 90vh;
+        backdrop-filter: blur(20px);
+        transition: .3s;
+    }
+
+    .nav-menu ul {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .nav-menu-btn {
+        display: block;
+    }
+
+    .nav-menu-btn i {
+        font-size: 4vw; /* Устанавливаем размер иконки меню относительно ширины окна */
+        color: #fff;
+        padding: 2vw;
+        background: rgba(255, 255, 255, 0.2);
+        border-radius: 50%;
+        cursor: pointer;
+        transition: .3s;
+    }
+
+    .nav-menu-btn i:hover {
+        background: rgba(255, 255, 255, 0.15);
+    }
+}
+
+@media only screen and (max-width: 540px) {
+    .wrapper {
+        min-height: 100vh;
+    }
+
+    .form-box {
+        width: 100%;
+        height: 500px;
+    }
+}

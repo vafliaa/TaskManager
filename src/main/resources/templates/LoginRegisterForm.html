@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title id="pageTitle" th:text="${pageTitle}">Авторизация</title>
+    <link rel="stylesheet" type="text/css" href="/css/RegLogStyles.css">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+
+    <script>
+        function hideErrorMessages() {
+            var errorMessages = document.querySelectorAll('.error-message');
+            errorMessages.forEach(function(errorMessage) {
+                errorMessage.style.display = 'none';
+            });
+        }
+
+        function showLogin() {
+            var loginBlock = document.getElementById('loginBlock');
+            var registerBlock = document.getElementById('registerBlock');
+            if (loginBlock && registerBlock) {
+                loginBlock.style.display = 'block';
+                registerBlock.style.display = 'none';
+                document.getElementById('pageTitle').innerText = "Авторизация";
+                hideErrorMessages();
+            }
+        }
+
+        function showRegister() {
+            var loginBlock = document.getElementById('loginBlock');
+            var registerBlock = document.getElementById('registerBlock');
+            if (loginBlock && registerBlock) {
+                loginBlock.style.display = 'none';
+                registerBlock.style.display = 'block';
+                document.getElementById('pageTitle').innerText = "Регистрация";
+                hideErrorMessages();
+            }
+        }
+    </script>
+</head>
+<body>
+
+<div class="wrapper">
+    <!-- Блок входа -->
+    <div id="loginBlock" th:style="${loginPage} ? 'display: block;' : 'display: none;'">
+        <h1>Авторизация</h1>
+        <form th:action="@{/login}" method="post" th:object="${user}" class="login-form">
+            <div class="input-box">
+                <input type="text" id="loginUsername" name="username" placeholder="Имя пользователя" th:field="*{username}">
+                <i class='bx bxs-user'></i>
+                <div th:if="${errorName}" class="error-message">
+                    <p th:text="${errorName}"></p>
+                </div>
+            </div>
+            <div class="input-box">
+                <input type="password" id="loginPassword" name="password" placeholder="Пароль" th:field="*{password}">
+                <i class='bx bxs-lock-alt'></i>
+                <div th:if="${errorPass}" class="error-message">
+                    <p th:text="${errorPass}"></p>
+                </div>
+            </div>
+
+            <div class="buttons-container">
+                <button class="back-btn" onclick="window.location.href = '/'; return false;">
+                    <i class='bx bx-left-arrow-alt' ></i>
+                </button>
+
+                <button type="submit" class="btn">Вход</button>
+            </div>
+
+            <!-- Ссылка для переключения на блок входа -->
+            <div class="toggle-link">
+                <p><a href="#" onclick="showRegister()">Регистрация</a></p>
+            </div>
+        </form>
+    </div>
+
+    <!-- Блок регистрации -->
+    <div id="registerBlock" th:style="${registerPage} ? 'display: block;' : 'display: none;'">
+        <h1>Регистрация</h1>
+        <form th:action="@{/register}" method="post" th:object="${user}" class="register-form">
+            <div class="input-box">
+                <input type="text" id="registerUsername" name="username" placeholder="Имя пользователя" th:field="*{username}">
+                <i class='bx bxs-user'></i>
+                <div th:if="${errorName}" class="error-message">
+                    <p th:text="${errorName}"></p>
+                </div>
+            </div>
+            <div class="input-box">
+                <input type="password" id="registerPassword" name="password" placeholder="Пароль" th:field="*{password}">
+                <i class='bx bxs-lock-alt'></i>
+                <div th:if="${errorPass}" class="error-message">
+                    <p th:text="${errorPass}"></p>
+                </div>
+            </div>
+
+            <div class="buttons-container">
+                <button class="back-btn" onclick="window.location.href = '/'; return false;">
+                    <i class='bx bx-left-arrow-alt' ></i>
+                </button>
+
+                <button type="submit" class="btn">Зарегистрироваться</button>
+            </div>
+
+            <!-- Ссылка для переключения на блок входа -->
+            <div class="toggle-link">
+                <p><a href="#" onclick="showLogin()">Вход</a></p>
+            </div>
+        </form>
+    </div>
+</div>
+</body>
+</body>
+</html>

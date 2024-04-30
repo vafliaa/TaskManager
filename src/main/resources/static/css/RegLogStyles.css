@@ -1,0 +1,150 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap');
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Montserrat', sans-serif;
+}
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: url('../jpg/regLog/RegLogbackground.jpeg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    overflow: hidden;
+}
+
+.wrapper {
+    width: 420px;
+    background: transparent;
+    border: 2px solid rgba(255, 255, 255, .2);
+    backdrop-filter: blur(20px);
+    box-shadow: 0 0 10px rgba(0, 0, 0, .2);
+    color: #fff;
+    border-radius: 10px;
+    padding: 30px 40px;
+    resize: none;
+}
+
+
+.wrapper h1 {
+    font-size: 36px;
+    text-align: center;
+}
+
+.wrapper .input-box {
+    position: relative;
+    width: 100%;
+    height: 50px;
+    margin: 30px 0 40px;
+}
+
+.input-box input {
+    width: 100%;
+    height: 100%;
+    background: transparent;
+    border: none;
+    outline: none;
+    border: 2px solid rgba(255, 255, 255, .2);
+    border-radius: 40px;
+    font-size: 16px;
+    color: #fff;
+    padding: 20px 45px 20px 20px;
+}
+
+.input-box input::placeholder {
+    color: #fff;
+}
+
+.input-box i {
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 25px;
+}
+
+.wrapper .btn {
+    width: 80%;
+    height: 45px;
+    background: #fff;
+    border: none;
+    outline: none;
+    border-radius: 40px;
+    box-shadow:  0 0 10px rgba(0, 0, 0, .1);
+    cursor: pointer;
+    font-size: 16px;
+    color: #333;
+    font-weight: 600;
+    transition: background-color 0.3s ease; /* Плавное изменение цвета фона */
+}
+
+.wrapper .btn:hover {
+    background-color: #ddd; /* Темнее при наведении */
+}
+
+.wrapper .back-btn {
+    width: 15%;
+    height: 45px;
+    background: #fff;
+    border: none;
+    outline: none;
+    border-radius: 40px;
+    box-shadow:  0 0 10px rgba(0, 0, 0, .1);
+    cursor: pointer;
+    font-size: 16px;
+    color: #333;
+    font-weight: 600;
+    transition: transform 0.3s ease; /* Плавная анимация */
+}
+
+.back-btn:hover {
+    transform: translateX(-5px); /* Сдвиг на 5px влево при наведении */
+}
+
+.back-btn i {
+    font-size: 35px;
+    margin: 5px;
+    transition: transform 0.3s ease; /* Плавная анимация */
+}
+
+.back-btn:hover i {
+    transform: translateX(-5px); /* Сдвиг стрелки на 5px влево при наведении */
+}
+
+.buttons-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 30px;
+}
+
+.back-btn,
+.btn {
+    width: calc(50% - 2px); /* Разделение на две равные части с отступом 5px между кнопками */
+}
+
+.wrapper .toggle-link {
+    font-size: 14.5px;
+    text-align: center;
+    margin: 20px 0 15px;
+    margin-top: 15px;
+}
+
+.toggle-link p a {
+    color: #fff;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.toggle-link p a:hover {
+    text-decoration: underline;
+}
+
+.error-message {
+    color: red;
+    margin-top: 5px; /* Отрицательный отступ для перемещения сообщения вверх */
+}
