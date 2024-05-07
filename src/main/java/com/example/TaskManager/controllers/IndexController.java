@@ -1,32 +1,26 @@
-package com.example.TaskManager.controller;
+package com.example.TaskManager.controllers;
 
-import com.example.TaskManager.Repository.GroupRepository;
 import com.example.TaskManager.Repository.UserRepository;
-import com.example.TaskManager.model.Group;
 import com.example.TaskManager.model.User;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-
-import java.util.ArrayList;
-import java.util.List;
 import javax.servlet.http.HttpSession;
-import java.util.UUID;
 
 @Controller
+@RequiredArgsConstructor
+@Slf4j
 public class IndexController {
 
-    @Autowired
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
 
     @GetMapping("/")
     public String showIndexPage(Model model, HttpSession session) {
         String loggedInUsername = (String) session.getAttribute("loggedInUser");
         if (loggedInUsername != null) {
-            System.out.println("Session ID: " + session.getId()); // Выведем ID сессии
+            log.info("Session ID: " + session.getId());
             User loggedInUser = userRepository.findByUsername(loggedInUsername);
             if (loggedInUser != null) {
                 model.addAttribute("loggedInUsername", loggedInUsername);

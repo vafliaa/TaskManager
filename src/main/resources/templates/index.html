@@ -21,24 +21,25 @@
             </ul>
         </div>
         <div class="nav-button">
-            <span th:if="${loggedInUsername != null}" th:text="${loggedInUsername}"></span>
-            <a th:if="${loggedInUsername != null}" th:href="@{/logout}">
-                <button class="btn">Выход</button>
+            <span style="font-size: 16px; right: 10px;" th:if="${loggedInUsername != null}" th:text="${loggedInUsername}"></span>
+            <a th:if="${loggedInUsername != null}" th:href="@{/logout}" style="text-decoration: none; color: black;">
+                <button class="btn" style="font-size: 16px;">Выход</button>
             </a>
-            <a th:if="${loggedInUsername == null}" th:href="@{/login}">
-                <button class="btn white-btn">Вход</button>
+            <a th:if="${loggedInUsername == null}" th:href="@{/login}" style="text-decoration: none; color: black;">
+                <button class="btn white-btn" style="font-size: 16px;">Вход</button>
             </a>
-            <a th:if="${loggedInUsername == null}" th:href="@{/register}">
-                <button class="btn">Регистрация</button>
+            <a th:if="${loggedInUsername == null}" th:href="@{/register}" style="text-decoration: none; color: black;">
+                <button class="btn" style="font-size: 16px;">Регистрация</button>
             </a>
         </div>
+
         <div class="nav-menu-btn">
             <i class="bx bx-menu" onclick="myMenuFunction()"></i>
         </div>
     </nav>
 
     <div id="home">
-        <div class="section-content">
+        <div>
             <h1>Легко управляйте своими задачами</h1>
             <h1>и сотрудничайте с командой</h1><br>
             <p>Откройте для себя нашу интерактивную платформу, которая упрощает
@@ -47,7 +48,7 @@
         </div>
 
         <div class="nav-button">
-            <a th:href="@{/taskPage}" class="btn"><strong>Приступить к задачам</strong></a>
+            <a th:href="@{/taskPage}" class="btn" style="text-decoration: none; color: black;"><strong>Приступить к задачам</strong></a>
         </div>
 
     </div>
@@ -83,18 +84,14 @@
             <p>Присоединяйтесь к нам и давайте вместе создавать лучшее будущее для вашего бизнеса!</p>
         </div>
     </div>
-
-
 </div>
-
-
-
 
 <script th:inline="javascript">
     /*<![CDATA[*/
     var loggedInUsername = /*[[${loggedInUsername}]]*/ null;
     /*]]>*/
 </script>
+
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         var links = document.querySelectorAll('.link');
@@ -154,33 +151,6 @@
         });
     });
 
-    // Функция для скроллинга к верху страницы
-    function scrollToTop() {
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
-
-    function createGroup() {
-        if (loggedInUsername == null) {
-            window.location.href = "/login"; // Перенаправляем на страницу авторизации
-        } else {
-            // Отображаем модальное окно для создания группы
-            document.getElementById('createGroupModal').style.display = 'block';
-        }
-    }
-
-    function joinGroup() {
-        if (loggedInUsername == null) {
-            window.location.href = "/login"; // Перенаправляем на страницу авторизации
-        } else {
-            // Отображаем модальное окно для присоединения к группе
-            document.getElementById('joinGroupModal').style.display = 'block';
-        }
-    }
-
-    function closeModal(modalId) {
-        // Закрываем модальное окно
-        document.getElementById(modalId).style.display = 'none';
-    }
 </script>
 
 </body>

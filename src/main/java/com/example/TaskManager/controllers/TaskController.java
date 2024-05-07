@@ -1,4 +1,4 @@
-package com.example.TaskManager.controller;
+package com.example.TaskManager.controllers;
 
 import com.example.TaskManager.Repository.GroupRepository;
 import com.example.TaskManager.Repository.TaskRepository;
@@ -23,14 +23,11 @@ import java.util.*;
 @Controller
 public class TaskController {
 
-    @Autowired
-    private GroupRepository groupRepository;
+    private final GroupRepository groupRepository;
 
-    @Autowired
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
 
-    @Autowired
-    private TaskRepository taskRepository;
+    private final TaskRepository taskRepository;
 
     private final TaskService taskService;
 
@@ -38,79 +35,95 @@ public class TaskController {
 
     private final UserService userService;
 
-    private List<String> userGroups = new ArrayList<>(); // Список групп пользователя
-
-
-    @GetMapping("/taskPage")
-    public String showTaskPage(@RequestParam("groupId") Long groupId, Model model, HttpSession session) {
+    @RequestMapping(value = {"/taskPage", "/taskPage/{groupId}"}, method = {RequestMethod.GET, RequestMethod.POST})
+    public String showTaskPage(@RequestParam(name = "groupId", required = false) Long groupId, Model model, HttpSession session) {
         String loggedInUsername = (String) session.getAttribute("loggedInUser");
-        System.out.println("Logged In Username: " + loggedInUsername); // Проверяем, что получили имя пользователя
-        System.out.println("Group ID: " + groupId); // Проверяем, что получили ID группы
-        boolean isGroupOwner = groupService.isGroupOwner(loggedInUsername, groupId);
-        System.out.println("Is Group Owner: " + isGroupOwner); // Проверяем результат проверки статуса владельца группы
-        String groupCode = groupService.getGroupCodeById(groupId);
+        if (loggedInUsername != null) {
+            User loggedInUser = userRepository.findByUsername(loggedInUsername);
+            if (loggedInUser != null) {
+                model.addAttribute("loggedInUsername", loggedInUsername);
+                // Проверяем наличие групп у пользователя
+                List<Group> userGroups = loggedInUser.getGroups();
+                if (userGroups != null && !userGroups.isEmpty()) {
+                    model.addAttribute("groupList", userGroups);
+                    List<String> groupCodes = new ArrayList<>();
+                    for (Group group : userGroups) {
+                        String groupCode = groupService.getGroupCodeById(group.getId());
+                        groupCodes.add(groupCode);
 
-        String groupName = groupService.getGroupNameById(groupId);
-
-        // Получаем список всех задач по groupId
-        List<Task> tasks = taskService.getTasksByGroupId(groupId);
-        // Создаем список для хранения имен исполнителей
-        List<String> executorNames = new ArrayList<>();
-        // Получаем список поручителей для каждой задачи в группе
-        List<String> guarantorNames = new ArrayList<>();
-        // Создаем список для хранения дат создания задач
-        List<Date> taskCreatedAtList = new ArrayList<>();
-
-        // Создаем списки для задач в разных статусах
-        List<Task> todoTasks = new ArrayList<>();
-        List<Task> inProgressTasks = new ArrayList<>();
-        List<Task> completedTasks = new ArrayList<>();
-
-        // Создаем список для хранения идентификаторов задач
-        List<Long> taskId = new ArrayList<>();
-
-        // Распределяем задачи по спискам в зависимости от их статуса
-        for (Task task : tasks) {
-            Long executorId = task.getExecutorId();
-            String executorName = userService.getUsernameById(executorId);
-            System.out.println(executorName);
-            executorNames.add(executorName);
-
-            Long guarantorId = task.getExecutorId();
-            String guarantorName = userService.getUsernameById(guarantorId);
-            guarantorNames.add(guarantorName);
-
-            taskCreatedAtList.add(task.getCreatedDate());
-
-            taskId.add(task.getId());
-
-            // Логика по обработке других статусов, если необходимо
-            if (task.getStatusId() == 1L) {
-                todoTasks.add(task);
-            } else if (task.getStatusId() == 2L) {
-                inProgressTasks.add(task);
-            } else if (task.getStatusId() == 3L) {
-                completedTasks.add(task);
+                        boolean isGroupOwner = groupService.isGroupOwner(loggedInUsername, group.getId());
+                        System.out.println(isGroupOwner);
+                        model.addAttribute("isGroupOwner_" + group.getId(), isGroupOwner); // Добавить флаг isGroupOwner в модель
+                    }
+                    model.addAttribute("groupCodes", groupCodes);
+                } else {
+                    model.addAttribute("groupCodes", null);
+                    model.addAttribute("groupList", null);
+                }
             }
         }
+        if (groupId != null) {
+            System.out.println("Group ID: " + groupId); // Проверяем, что получили ID группы
+            boolean isGroupOwner = groupService.isGroupOwner(loggedInUsername, groupId);
+            System.out.println("Is Group Owner: " + isGroupOwner); // Проверяем результат проверки статуса владельца группы
 
-        // Добавляем списки задач в модель для отображения на странице
-        model.addAttribute("todoTasks", todoTasks);
-        model.addAttribute("inProgressTasks", inProgressTasks);
-        model.addAttribute("completedTasks", completedTasks);
-        model.addAttribute("executorNames", executorNames);
-        model.addAttribute("guarantorNames", guarantorNames);
-        model.addAttribute("taskCreatedAtList", taskCreatedAtList);
-        model.addAttribute("taskId", taskId);
+            String groupName = groupService.getGroupNameById(groupId);
 
-        // Добавляем остальные неизмененные атрибуты в модель
-        model.addAttribute("groupName", groupName);
-        model.addAttribute("isGroupOwner", isGroupOwner);
-        model.addAttribute("groupMembers", isGroupOwner ? groupService.getGroupMembers(groupId) : new ArrayList<>());
-        model.addAttribute("groupId", groupId);
-        model.addAttribute("groupCode", groupCode);
-        model.addAttribute("loggedInUsername", loggedInUsername);
+            // Получаем список всех задач по groupId
+            List<Task> tasks = taskService.getTasksByGroupId(groupId);
+            // Создаем список для хранения имен исполнителей
+            List<String> executorNames = new ArrayList<>();
+            // Получаем список поручителей для каждой задачи в группе
+            List<String> guarantorNames = new ArrayList<>();
+            // Создаем список для хранения дат создания задач
+            List<Date> taskCreatedAtList = new ArrayList<>();
 
+            // Создаем списки для задач в разных статусах
+            List<Task> todoTasks = new ArrayList<>();
+            List<Task> inProgressTasks = new ArrayList<>();
+            List<Task> completedTasks = new ArrayList<>();
+
+            // Создаем карты для хранения пар "taskId - userName" для исполнителей и гарантов
+            Map<Long, String> executorMap = new HashMap<>();
+            Map<Long, String> guarantorMap = new HashMap<>();
+            // Распределяем задачи по спискам в зависимости от их статуса
+            for (Task task : tasks) {
+                Long executorId = task.getExecutorId();
+                String executorName = userService.getUsernameById(executorId);
+                System.out.println("EXECUTOR NAME: " + executorName);
+
+                Long guarantorId = task.getGuarantorId();
+                String guarantorName = userService.getUsernameById(guarantorId);
+                taskCreatedAtList.add(task.getCreatedDate());
+
+                // Добавляем пары "taskId - userName" в карты для исполнителей и гарантов
+                executorMap.put(task.getId(), executorName);
+                guarantorMap.put(task.getId(), guarantorName);
+
+                // Логика по обработке других статусов, если необходимо
+                if (task.getStatusId() == 1L) {
+                    todoTasks.add(task);
+                } else if (task.getStatusId() == 2L) {
+                    inProgressTasks.add(task);
+                } else if (task.getStatusId() == 3L) {
+                    completedTasks.add(task);
+                }
+            }
+
+            // Добавляем списки задач в модель для отображения на странице
+            model.addAttribute("todoTasks", todoTasks);
+            model.addAttribute("inProgressTasks", inProgressTasks);
+            model.addAttribute("completedTasks", completedTasks);
+            model.addAttribute("executorMap", executorMap);
+            model.addAttribute("guarantorMap", guarantorMap);
+            model.addAttribute("taskCreatedAtList", taskCreatedAtList);
+
+            // Добавляем остальные неизмененные атрибуты в модель
+            model.addAttribute("groupName", groupName);
+            model.addAttribute("isGroupOwner", isGroupOwner);
+            model.addAttribute("groupMembers", isGroupOwner ? groupService.getGroupMembers(groupId) : new ArrayList<>());
+            model.addAttribute("groupId", groupId);
+        }
         return "taskPage";
     }
 
@@ -118,6 +131,7 @@ public class TaskController {
     public String editGroupName(@RequestParam(value = "newGroupName", required = false) String newGroupName,
                                 @RequestParam("groupId") Long groupId) {
         // Найдем группу по ее идентификатору
+        System.out.println(groupId);
         Optional<Group> optionalGroup = groupRepository.findById(groupId);
         if (optionalGroup.isPresent()) {
             Group group = optionalGroup.get();
@@ -126,7 +140,6 @@ public class TaskController {
             // Сохраним изменения
             groupRepository.save(group);
         }
-
         return "redirect:/taskPage?groupId=" + groupId;
     }
 
@@ -170,7 +183,6 @@ public class TaskController {
         return "redirect:/";
     }
 
-
     // Закончить ошибка с заполнением полей guarantorId
     @PostMapping("/task/create")
     public String createTask(@RequestParam("assignee") String assigneeName,
@@ -212,9 +224,6 @@ public class TaskController {
         return "redirect:/taskPage?groupId=" + groupId;
     }
 
-
-
-
     @PostMapping("/task/start/{taskId}")
     public String startTask(@RequestParam("taskId") String taskIdString) {
         Long taskId = Long.parseLong(taskIdString);
@@ -225,7 +234,6 @@ public class TaskController {
             // Обработка случая, если задача не найдена
             return "errorPage";
         }
-
         // Обновляем статус задачи на "В работе"
         task.setStatusId(2L); // Предположим, что 2L соответствует статусу "В работе"
         taskService.updateStatusTask(task);
@@ -270,8 +278,7 @@ public class TaskController {
     public String updateTask(@RequestParam("taskId") Long taskId,
                              @RequestParam("assignee") String assigneeName,
                              @RequestParam("taskText") String taskText,
-                             @RequestParam("deadline") @DateTimeFormat(pattern = "yyyy-MM-dd") Date deadline,
-                                        HttpSession session) {
+                             @RequestParam("deadline") @DateTimeFormat(pattern = "yyyy-MM-dd") Date deadline) {
 
         // Получаем задачу по ее идентификатору
         Task task = taskService.getTaskById(taskId);
@@ -313,7 +320,7 @@ public class TaskController {
                 userRepository.save(owner);
             }
         }
-        return "redirect:/";
+        return "redirect:/taskPage";
     }
 
     @PostMapping("/joinGroup")
@@ -331,25 +338,6 @@ public class TaskController {
                 groupRepository.save(group);
             }
         }
-        return "redirect:/";
-    }
-
-    @GetMapping("/taskPage")
-    public String showTaskPage(Model model, HttpSession session) {
-        String loggedInUsername = (String) session.getAttribute("loggedInUser");
-        if (loggedInUsername != null) {
-            System.out.println("Session ID: " + session.getId()); // Выведем ID сессии
-            User loggedInUser = userRepository.findByUsername(loggedInUsername);
-            if (loggedInUser != null) {
-                // Проверяем наличие групп у пользователя
-                List<Group> userGroups = loggedInUser.getGroups();
-                if (userGroups != null && !userGroups.isEmpty()) {
-                    model.addAttribute("groupList", userGroups);
-                } else {
-                    model.addAttribute("groupList", null); // Если групп нет, устанавливаем список групп как null
-                }
-            }
-        }
-        return "index";
+        return "redirect:/taskPage";
     }
 }

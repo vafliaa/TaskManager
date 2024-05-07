@@ -15,11 +15,13 @@ body {
     overflow: hidden;
 }
 
+
 .wrapper {
     position: relative;
     height: auto;
     min-height: 110vh;
     background: rgba(39, 39, 39, 0.4);
+    top: -20px;
 }
 
 .nav {
@@ -218,15 +220,15 @@ header {
     box-shadow: none; /* Убираем тень */
 }
 
-#home .section-content {
+#home .section-conten {
     transition: none;
 }
 
-#home .section-content h1 {
+#home .section-conten h1 {
     font-size: 38px;
 }
 
-#home .section-content p {
+#home .section-conten p {
     font-size: 25px;
 }
 
@@ -326,6 +328,13 @@ header {
     margin: 0 auto; /* Центрируем контейнер по горизонтали */
 }
 
+.section-conten {
+    opacity: 0; /* Начальная прозрачность */
+    transition: opacity 0.5s ease-in-out; /* Анимация появления */
+    max-width: 800px; /* Устанавливаем максимальную ширину контейнера текста */
+    margin: 0 auto; /* Центрируем контейнер по горизонтали */
+}
+
 .separator {
     width: 100%;
     height: 2px;
@@ -337,6 +346,9 @@ header {
     .section-content {
         max-width: 1000px; /* Увеличиваем максимальную ширину контейнера для больших экранов */
     }
+    .section-conten {
+        max-width: 1000px; /* Увеличиваем максимальную ширину контейнера для больших экранов */
+    }
 }
 
 @media only screen and (max-width: 786px) {
@@ -344,11 +356,11 @@ header {
         width: 80%; /* Уменьшаем ширину блока #home для меньших экранов */
     }
 
-    #home .section-content h1 {
+    #home .section-conten h1 {
         font-size: 6vw; /* Устанавливаем размер заголовка относительно ширины окна */
     }
 
-    #home .section-content p {
+    #home .section-conten p {
         font-size: 3vw; /* Устанавливаем размер текста относительно ширины окна */
     }
 

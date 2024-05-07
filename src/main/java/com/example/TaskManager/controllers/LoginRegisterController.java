@@ -1,4 +1,4 @@
-package com.example.TaskManager.controller;
+package com.example.TaskManager.controllers;
 
 import com.example.TaskManager.Repository.GroupRepository;
 import com.example.TaskManager.model.User;

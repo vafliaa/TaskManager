@@ -11,8 +11,8 @@
 </head>
 <body>
 
-<!-- Модальное окно для присоединения к группе
-<div id="joinGroupModal" class="modal">
+<!-- Модальное окно для присоединения к группе-->
+<div id="joinGroupModal" class="modal" style="display: none;">
     <div class="modal-content">
         <span class="close" onclick="closeModal('joinGroupModal')">&times;</span>
         <form action="/joinGroup" method="post">
@@ -20,11 +20,10 @@
             <button type="submit">Присоединиться</button>
         </form>
     </div>
-</div>-->
+</div>
 
 <!-- Модальное окно для создания группы -->
-<!--
-<div id="createGroupModal" class="modal">
+<div id="createGroupModal" class="modal" style="display: none;">
     <div class="modal-content">
         <span class="close" onclick="closeModal('createGroupModal')">&times;</span>
         <form action="/createGroup" method="post">
@@ -33,40 +32,73 @@
         </form>
     </div>
 </div>
--->
+
+<!-- Модальное окно для изменения названия группы -->
+<div style="display: none;" id="editGroupNameModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeModal('editGroupNameModal')">&times;</span>
+        <h2>Изменение названия группы</h2>
+        <form action="/editGroupName" method="post">
+            <input type="text" name="newGroupName" placeholder="Новое имя группы">
+            <input type="hidden" name="groupId" id="groupIdInput">
+            <button type="submit">Сохранить</button>
+        </form>
+    </div>
+</div>
+
+<!-- Модальное окно для подтверждения покидания группы -->
+<div style="display: none;" id="leaveGroupModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeModal('leaveGroupModal')">&times;</span>
+        <form action="/leaveGroup" method="post">
+            <input type="hidden" name="groupId" id="LeaveGroupIdInput">
+            <!-- Добавляем контейнер для текста сообщения -->
+            <div id="leaveGroupMessage"></div>
+            <!-- Кнопка отправки формы -->
+            <button type="submit">Покинуть группу</button>
+        </form>
+    </div>
+</div>
+
+
+<!--Модельное окно для приглашения в группу -->
+<div style="display: none;" id="inviteCodeModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeInviteCodeModal()">&times;</span>
+        <p>Для приглашения участника в группу отправьте ему код: <span id="groupCode"></span></p>
+    </div>
+</div>
 
 <!-- Форма для создания задачи -->
-<!--<div class="task-form" id="createTaskForm" style="display: none;">
-    <h2>Создание новой задачи</h2>
-
-    <form action="/task/create" method="post" onsubmit="return validateTaskForm()">
-        <label for="assignee">Исполнитель:</label>
-        <select id="assignee" name="assignee" required>
-            &lt;!&ndash; Опции для выбора исполнителя, например, из списка участников группы &ndash;&gt;
-            <option th:each="member : ${groupMembers}" th:value="${member.username}" th:text="${member.username}"></option>
-        </select><br>
-        <label for="taskText">Текст задачи:</label><br>
-        <textarea id="taskText" name="taskText" rows="4" cols="50" required></textarea><br>
-        <label for="deadline">Дедлайн:</label>
-        <input type="date" id="deadline" name="deadline" required><br>
-        <input type="submit" value="Создать задачу">
-        <input type="hidden" id="groupId" name="groupId" th:value="${groupId}" />
-
-    </form>
-</div>-->
+<div class="modal" id="createTaskForm" style="display: none;">
+    <div class="modal-content">
+        <span class="close" onclick="closeModal('createTaskForm')">&times;</span>
+        <h2>Создание новой задачи</h2>
+        <form action="/task/create" method="post" onsubmit="return validateTaskForm()">
+            <label for="assignee">Исполнитель:</label>
+            <select id="assignee" name="assignee" required>
+                <option th:each="member : ${groupMembers}" th:value="${member.username}" th:text="${member.username}"></option>
+            </select><br>
+            <label for="taskText">Текст задачи:</label><br>
+            <textarea id="taskText" name="taskText" rows="4" cols="50" required></textarea><br>
+            <label for="deadline">Дедлайн:</label>
+            <input type="date" id="deadline" name="deadline" required><br>
+            <input type="submit" value="Создать задачу">
+            <input type="hidden" id="groupId" name="groupId" th:value="${groupId}" />
+        </form>
+    </div>
+</div>
 
 <!-- Форма для ИЗМЕНЕНИЯ задачи -->
-<!--
 <div id="editTaskModal" class="modal" style="display: none;">
-    &lt;!&ndash; Контент модального окна &ndash;&gt;
     <div class="modal-content">
-        <span class="close" onclick="closeEditTaskForm()">&times;</span>
+        <span class="close" onclick="closeModal('editTaskModal')">&times;</span>
         <h2>Изменение задачи</h2>
         <form id="editTaskForm" th:if="${isGroupOwner}" action="/task/update/{taskId}" method="post">
-            &lt;!&ndash; Поля для редактирования задачи &ndash;&gt;
+            <!-- Поля для редактирования задачи -->
             <label for="editAssignee">Исполнитель:</label>
             <select id="editAssignee" name="assignee" required>
-                &lt;!&ndash; Опции для выбора исполнителя, например, из списка участников группы &ndash;&gt;
+                <!--Опции для выбора исполнителя, например, из списка участников группы -->
                 <option th:each="member : ${groupMembers}" th:value="${member.username}" th:text="${member.username}"></option>
             </select><br>
             <label for="editTaskText">Текст задачи:</label><br>
@@ -79,7 +111,6 @@
         </form>
     </div>
 </div>
--->
 
 
 <div class="wrapper">
@@ -88,7 +119,7 @@
             <i class="bx bx-menu" onclick="myMenuFunction()"></i>
         </div>
         <div class="nav-logo">
-            <p>Группа крутая</p>
+            <p th:text="${groupName}"></p>
         </div>
         <div class="nav-menu" id="navMenu">
             <p class="menu-title">Ваши группы</p>
@@ -103,63 +134,66 @@
             <ul class="group-list">
                 <li>
                     <div th:if="${groupList != null}">
-                            <li th:each="group : ${groupList}">
-                                <div class="group-item">
-                                    <div class="group-header">
-                                        <a th:href="@{/taskPage(groupId=${group.id})}" class="group-link" th:text="${group.name}"></a>
-                                        <div class="group-buttons">
-                                            <button id="toggle-members-btn" class="group-button" title="Участники группы">
-                                                <i class='bx bxs-user-rectangle' ></i>
-                                            </button>
-                                            <button class="group-button" title="Покинуть">
-                                                <i class='bx bx-exit'></i>
-                                            </button>
-                                            <button class="group-button" title="Изменить имя">
-                                                <i class='bx bxs-edit-alt'></i>
-                                            </button>
-                                        </div>
-                                    </div>
-                                    <div class="group-members" style="display: none;">
-                                        <!-- Участники группы -->
-                                        <h4>Участники группы</h4>
-                                        <ul>
-                                            <li>Участник 1</li>
-                                            <li>Участник 2</li>
-                                            <!-- Добавьте другие участники группы, если необходимо -->
-                                        </ul>
-                                        <button class="addgroup-button" title="Добавить участника">
-                                            <i class='bx bx-plus' ></i>
-                                        </button>
-                                    </div>
+                        <div class="group-item" th:each="group, groupIndex : ${groupList}">
+                            <div class="group-header">
+                                <a th:href="@{/taskPage(groupId=${group.id})}" class="group-link" th:text="${group.name}"></a>
+                                <div class="group-buttons">
+                                    <button th:if="${#vars['isGroupOwner_' + group.id]}" class="group-button" title="Изменить имя" onclick="editGroupName(this)" th:attr="data-group-id=${group.id}">
+                                        <i class='bx bxs-edit-alt'></i>
+                                    </button>
+                                    <button id="toggle-members-btn" class="group-button" title="Участники группы">
+                                        <i class='bx bxs-user-rectangle' ></i>
+                                    </button>
+                                    <button class="group-button" title="Покинуть" onclick="leaveGroup(this)" th:attr="data-group-id=${group.id}, data-is-group-owner=${#vars['isGroupOwner_' + group.id]}">
+                                        <i class='bx bx-exit'></i>
+                                    </button>
                                 </div>
-                            </li>
+                            </div>
+                            <div class="group-members" style="display: none;">
+                                <!-- Участники группы -->
+                                <h4>Участники группы</h4>
+                                <ul th:if="${not #lists.isEmpty(group.members)}">
+                                    <li th:each="member : ${group.members}" th:text="${member.username}"></li>
+                                </ul>
+                                <!-- Используем data-* для передачи groupCode -->
+                                <button class="button-invite" title="Добавить участника" th:attr="data-group-code=${group.groupCode}" onclick="showInviteCode(this.getAttribute('data-group-code'))">
+                                    <i class='bx bx-plus' ></i>
+                                </button>
+                            </div>
+                        </div>
                     </div>
                 </li>
             </ul>
-            <div class="nav-button" onclick="window.location.href = '/'; return false;">
-                <i class='bx bx-left-arrow-alt'></i>
-            </div>
-    </nav>
-    </div>
 
-    <!-- Столбец "Не начато" -->
+        </div>
+        <div class="nav-button" onclick="window.location.href = '/'; return false;">
+            <i class='bx bx-left-arrow-alt'></i>
+        </div>
+    </nav>
+
     <div class="task-columns">
+        <!-- Столбец "Не начато" -->
         <div class="task-column">
             <h2>Не начато</h2>
-            <div class="task" th:each="task, idx : ${todoTasks}" >
+            <button th:if="${isGroupOwner}" class="button-task-create" title="Создать новую задачу" onclick="showCreateTaskForm()">
+                <i class='bx bx-plus' ></i>
+            </button>
+            <div class="task" th:each="task, idx : ${todoTasks}">
                 <div class="task-container">
                     <div class="task">
-                        <span class="user-name" data-task-id="testTaskId">Иванов Иван Иванович<span th:text="${executorNames[__${idx.index}__]}"></span></span><br>
-                        <div class="task-info" style="display: none;" data-task-id="testTaskId">
+                        <span class="user-name" th:data-task-id="${task.id}">
+                            <span th:text="${executorMap[task.id]}"></span>
+                        </span><br>
+                        <div class="task-info" style="display: none;" th:data-task-id="${task.id}">
                             <div class="task-text">
-                                <span class="task-text__label">Текст задачи:</span>
+                                <span class="task-text__label">Задача:</span>
                                 <div class="task-text__content">
-                                    <span>Текст задачи: <span th:text="${task.description}"></span></span><br>
+                                    <span th:text="${task.description}"></span><br>
                                 </div>
                             </div>
                             <div class="task-details">
+                                <span align="right">От: <span th:text="${guarantorMap[task.id]}"></span></span><br>
                                 <span>Дедлайн: <span th:text="${task.deadline}"></span></span><br>
-                                <span>Поручитель: <span th:text="${guarantorNames[__${idx.index}__]}"></span></span><br>
                                 <span>Дата создания: <span th:text="${taskCreatedAtList[__${idx.index}__]}"></span></span><br>
                                 <input type="hidden" name="taskId" id="taskId1" th:value="${task.id}" />
                             </div>
@@ -175,14 +209,14 @@
 
                                 <form th:if="${isGroupOwner}" method="post">
                                     <!-- Кнопка для приступления к задаче -->
-                                    <button class="task-button" title="Изменить" type="button" onClick="showEditTaskForm(document.getElementById('taskId').value" style="left: 40px;">
+                                    <button class="task-button" title="Изменить" type="button" onClick="showEditTaskForm(document.getElementById('taskId1').value)" style="left: 40px;">
                                         <i class='bx bxs-edit-alt'></i>
                                     </button>
                                 </form>
                             </div>
 
                             <!-- Показывать кнопку "Приступить к задаче" только если пользователь исполнитель -->
-                            <form th:if="${executorNames[__${idx.index}__] == loggedInUsername}" action="/task/start/${task.id}" method="post">
+                            <form th:if="${executorMap[task.id] == loggedInUsername}" action="/task/start/${task.id}" method="post">
                                 <!-- Скрытое поле для передачи taskId -->
                                 <input type="hidden" name="taskId" th:value="${task.id}" />
                                 <!-- Кнопка для приступления к задаче -->
@@ -202,17 +236,17 @@
             <div class="task" th:each="task, idx : ${inProgressTasks}">
                 <div class="task-container">
                     <div class="task">
-                        <span class="user-name" data-task-id="testTaskId">Иванов Иван Иванович<span th:text="${executorNames[__${idx.index}__]}"></span></span><br>
-                        <div class="task-info" style="display: none;" data-task-id="testTaskId">
+                        <span class="user-name" th:data-task-id="${task.id}"><span th:text="${executorMap[task.id]}"></span></span><br>
+                        <div class="task-info" style="display: none;" th:data-task-id="${task.id}">
                             <div class="task-text">
-                                <span class="task-text__label">Текст задачи:</span>
+                                <span class="task-text__label">Задача:</span>
                                 <div class="task-text__content">
-                                    <span>Текст задачи: <span th:text="${task.description}"></span></span><br>
+                                    <span th:text="${task.description}"></span><br>
                                 </div>
                             </div>
                             <div class="task-details">
+                                <span align="right">От: <span th:text="${guarantorMap[task.id]}"></span></span><br>
                                 <span>Дедлайн: <span th:text="${task.deadline}"></span></span><br>
-                                <span>Поручитель: <span th:text="${guarantorNames[__${idx.index}__]}"></span></span><br>
                                 <span>Дата создания: <span th:text="${taskCreatedAtList[__${idx.index}__]}"></span></span><br>
                                 <input type="hidden" name="taskId" id="taskId2" th:value="${task.id}" />
                             </div>
@@ -228,14 +262,14 @@
 
                                 <form th:if="${isGroupOwner}" method="post">
                                     <!-- Кнопка для приступления к задаче -->
-                                    <button class="task-button" title="Изменить" type="button" onClick="showEditTaskForm(document.getElementById('taskId2').value" style="left: 40px;">
+                                    <button class="task-button" title="Изменить" type="button" onClick="showEditTaskForm(document.getElementById('taskId2').value)" style="left: 40px;">
                                         <i class='bx bxs-edit-alt'></i>
                                     </button>
                                 </form>
                             </div>
 
                             <!-- Показывать кнопку "Приступить к задаче" только если пользователь исполнитель -->
-                            <form th:if="${executorNames[__${idx.index}__] == loggedInUsername}" action="/task/start/${task.id}" method="post">
+                            <form th:if="${executorMap[task.id] == loggedInUsername}" action="/task/finish/${task.id}" method="post">
                                 <!-- Скрытое поле для передачи taskId -->
                                 <input type="hidden" name="taskId" th:value="${task.id}" />
                                 <!-- Кнопка для приступления к задаче -->
@@ -251,21 +285,21 @@
 
         <!-- Столбец "Завершено" -->
         <div class="task-column">
-            <h2>Не начато</h2>
-            <div class="task" th:each="task, idx : ${inProgressTasks}">
+            <h2>Завершено</h2>
+            <div class="task" th:each="task, idx : ${completedTasks}">
                 <div class="task-container">
                     <div class="task">
-                        <span class="user-name" data-task-id="testTaskId">Иванов Иван Иванович<span th:text="${executorNames[__${idx.index}__]}"></span></span><br>
-                        <div class="task-info" style="display: none;" data-task-id="testTaskId">
+                        <span class="user-name" th:data-task-id="${task.id}"><span th:text="${executorMap[task.id]}"></span></span><br>
+                        <div class="task-info" style="display: none;" th:data-task-id="${task.id}">
                             <div class="task-text">
-                                <span class="task-text__label">Текст задачи:</span>
+                                <span class="task-text__label">Задача:</span>
                                 <div class="task-text__content">
-                                    <span>Текст задачи: <span th:text="${task.description}"></span></span><br>
+                                    <span th:text="${task.description}"></span><br>
                                 </div>
                             </div>
                             <div class="task-details">
+                                <span align="right">От: <span th:text="${guarantorMap[task.id]}"></span></span><br>
                                 <span>Дедлайн: <span th:text="${task.deadline}"></span></span><br>
-                                <span>Поручитель: <span th:text="${guarantorNames[__${idx.index}__]}"></span></span><br>
                                 <span>Дата создания: <span th:text="${taskCreatedAtList[__${idx.index}__]}"></span></span><br>
                             </div>
                             <div class="task-btn-container">
@@ -284,16 +318,26 @@
             </div>
         </div>
     </div>
-
+</div>
+</div>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const userNames = document.querySelectorAll('.user-name');
             userNames.forEach(function(userName) {
                 userName.addEventListener('click', function() {
                     const taskId = this.getAttribute('data-task-id');
+                    const taskColumn = this.closest('.task-column'); // Находим ближайший родительский элемент с классом .task-column
                     const taskInfo = document.querySelector('.task-info[data-task-id="' + taskId + '"]');
+
                     // Отображаем/скрываем дополнительную информацию о задаче
                     taskInfo.style.display = taskInfo.style.display === 'none' ? 'block' : 'none';
+
+                    // Устанавливаем высоту только для столбца, содержащего имя пользователя
+                    if (taskColumn.style.height === 'auto') {
+                        taskColumn.style.height = taskColumn.scrollHeight + 'px'; // Используем высоту контента вместо автоматической высоты
+                    } else {
+                        taskColumn.style.height = 'auto'; // Возвращаем автоматическую высоту
+                    }
 
                     // Меняем border-radius у элемента .user-name
                     if (this.style.borderBottomLeftRadius === '0px') {
@@ -304,11 +348,11 @@
                         this.style.borderBottomLeftRadius = '0';
                         this.style.borderBottomRightRadius = '0';
                         this.style.borderBottom = '1px solid transparent'; // Убираем обводку
-
                     }
                 });
             });
         });
+
         function myMenuFunction() {
             var navMenu = document.getElementById("navMenu");
             if (navMenu.style.display === "block") {
@@ -319,7 +363,7 @@
         }
 
         document.addEventListener('DOMContentLoaded', function() {
-            const toggleMembersBtns = document.querySelectorAll('.group-button');
+            const toggleMembersBtns = document.querySelectorAll('.group-button#toggle-members-btn');
 
             toggleMembersBtns.forEach(function(btn) {
                 btn.addEventListener('click', function() {
@@ -336,7 +380,7 @@
                             groupMembers.style.opacity = '1'; // Устанавливаем прозрачность 1
                         }, 50); // Задержка в 50 миллисекунд перед появлением текста
                         // Вычисляем высоту блока с участниками группы и применяем ее к блоку .group-item
-                        const height = 90 + groupMembers.scrollHeight + 'px';
+                        const height = 80 + groupMembers.scrollHeight + 'px';
                         groupItem.style.height = height;
                     }
                 });
@@ -370,6 +414,7 @@
             editTaskModal.style.display = "none";
         }
         //////////////////////////////////////////////////  Группы -+ Index   /////////////////////////////////////////////////////////////////
+
         function createGroup() {
             if (loggedInUsername == null) {
                 window.location.href = "/login"; // Перенаправляем на страницу авторизации
@@ -383,31 +428,94 @@
             if (loggedInUsername == null) {
                 window.location.href = "/login"; // Перенаправляем на страницу авторизации
             } else {
-                // Отображаем модальное окно для присоединения к группе
-                document.getElementById('joinGroupModal').style.display = 'block';
+                // Получаем текущее состояние модального окна
+                var joinGroupModal = document.getElementById('joinGroupModal');
+                var displayStyle = window.getComputedStyle(joinGroupModal).display;
+
+                // Если модальное окно отображено, скрываем его, иначе отображаем
+                if (displayStyle === 'block') {
+                    joinGroupModal.style.display = 'none';
+                } else {
+                    joinGroupModal.style.display = 'block';
+                }
             }
         }
-
 
         function closeModal(modalId) {
             // Закрыть модальное окно
             document.getElementById(modalId).style.display = 'none';
         }
 
-        function editGroupName() {
-            // Отображаем модальное окно для изменения названия группы
+        function editGroupName(button) {
+            var groupId = button.getAttribute('data-group-id');
+            console.log("Edit group name for groupId:", groupId);
+
+            // Установите значение groupId в скрытое поле формы
+            document.getElementById('groupIdInput').value = groupId;
+
+            // Показать модальное окно
             document.getElementById('editGroupNameModal').style.display = 'block';
         }
 
-        function leaveGroup() {
+
+        function leaveGroup(button) {
+            var groupId = button.getAttribute('data-group-id');
+            console.log("Edit group name for groupId:", groupId);
+
+            // Установите значение groupId в скрытое поле формы
+            document.getElementById('LeaveGroupIdInput').value = groupId;
+
+            // Получить информацию о том, является ли текущий пользователь создателем группы
+            var isGroupOwner = button.getAttribute('data-is-group-owner');
+            console.log("Is Group Owner:", isGroupOwner);
+            // Получить элементы модального окна
+            var modalContent = document.getElementById('leaveGroupModal').getElementsByClassName('modal-content')[0];
+
+            // Определить текст сообщения в зависимости от значения isGroupOwner
+            var message = '';
+            if (isGroupOwner === 'true') {
+                message = 'Вы являетесь создателем этой группы. Если вы покинете группу, она будет полностью удалена.';
+            } else {
+                message = 'Вы уверены, что хотите покинуть эту группу?';
+            }
+            // Найти элемент для текста сообщения
+            var messageContainer = document.getElementById('leaveGroupMessage');
+            // Установить текст сообщения в контейнер
+            messageContainer.innerHTML = '<p>' + message + '</p>';
+
+            // Показать модальное окно
             document.getElementById('leaveGroupModal').style.display = 'block';
         }
+
 
         function validateTaskForm() {
             // Проведите дополнительную валидацию формы, если необходимо
             return true; // Возвращайте true, если форма прошла валидацию, иначе false
         }
 
+        function showInviteCode(groupCode) {
+            // Показываем модальное окно с кодом группы
+            var inviteCodeModal = document.getElementById("inviteCodeModal");
+            inviteCodeModal.style.display = "block";
+
+            // Отображаем код группы в модальном окне
+            var groupCodeSpan = document.getElementById("groupCode");
+            groupCodeSpan.innerText = groupCode;
+        }
+
+
+        function closeInviteCodeModal() {
+            var inviteCodeModal = document.getElementById("inviteCodeModal");
+            inviteCodeModal.style.display = "none";
+        }
+
+
+    </script>
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+        var loggedInUsername = /*[[${loggedInUsername}]]*/ null;
+        console.log("Logged in Username:", loggedInUsername);
+        /*]]>*/
     </script>
 </body>
 </html>

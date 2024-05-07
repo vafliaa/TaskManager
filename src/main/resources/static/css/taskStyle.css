@@ -183,6 +183,20 @@ body {
 }
 
 /* Группы в меню */
+.button-invite{
+    position: absolute;
+    width: 30px;
+    height: 30px;
+    border: none;
+    outline: none;
+    border-radius: 30px;
+    background-color: rgba(255, 255, 255, 0); /* Прозрачный белый цвет */
+    box-shadow:  0 0 10px rgba(0, 0, 0, .5);
+    cursor: pointer;
+    font-size: 22px;
+    color: #ffffff;
+    font-weight: 600;
+}
 
 .group-item {
     position: relative;
@@ -223,22 +237,6 @@ body {
     background-color: #ccc;
 }
 
-.addgroup-button {
-    position: absolute;
-    width: 30px;
-    height: 30px;
-    border: none;
-    outline: none;
-    border-radius: 30px;
-    background-color: rgba(255, 255, 255, 0); /* Прозрачный белый цвет */
-    box-shadow:  0 0 10px rgba(0, 0, 0, .5);
-    cursor: pointer;
-    font-size: 22px;
-    color: #ffffff;
-    font-weight: 600;
-    margin-top: 10px;
-}
-
 .group-members ul {
     line-height: 3; /* Устанавливаем желаемый интерлиньяж */
 }
@@ -255,8 +253,10 @@ body {
 }
 
 .group-buttons {
-    margin-left: 130px;
-    margin-bottom: 100px;
+    position: absolute;
+    display: flex;
+    left: 245px;
+    top: 0px;
 }
 
 
@@ -289,6 +289,23 @@ body {
 }
 
 /* Задачи */
+.button-task-create {
+    position: absolute;
+    width: 30px;
+    height: 30px;
+    right: 20px;
+    top: 20px;
+    border: none;
+    outline: none;
+    border-radius: 30px;
+    background-color: rgba(255, 255, 255, 0); /* Прозрачный белый цвет */
+    box-shadow:  0 0 10px rgba(0, 0, 0, .5);
+    cursor: pointer;
+    font-size: 22px;
+    color: #ffffff;
+    font-weight: 600;
+}
+
 
 .task-columns {
     margin-top: 120px;
@@ -299,6 +316,7 @@ body {
 .task-column {
     width: 33%;
     padding: 20px;
+    min-height: 150px; /* или другое минимальное значение */
     max-width: auto;
     border-bottom-left-radius: 20px;
     border-bottom-right-radius: 20px;
@@ -308,7 +326,6 @@ body {
     backdrop-filter: blur(5px);
     transition: height 0.1s ease; /* Добавлена плавная анимация */
 }
-
 
 .task-container {
     display: flex;
@@ -356,6 +373,7 @@ body {
 
 .task-info {
     position: relative;
+    top: -50px;
     border: 1px solid #000000;
     border-bottom-left-radius: 10px;
     border-bottom-right-radius: 10px;
@@ -381,6 +399,8 @@ body {
 }
 
 .user-name {
+    position: relative;
+    top: -50px;
     display: inline-block;
     border: 1px solid #030303;
     padding: 5px 10px;
@@ -397,6 +417,18 @@ body {
     height: auto; /* Автоопределение высоты */
     max-height: 800px; /* Максимальная высота блока */
     overflow: auto; /* Включение прокрутки при необходимости */
+}
+
+.task-info[data-task-id] {
+    display: none;
+}
+
+.task-info[data-task-id]:target {
+    display: block;
+}
+
+.task-info[data-task-id]:target ~ .task-column {
+    height: auto; /* Автоопределение высоты для столбца, содержащего открытую задачу */
 }
 
 .task-text__label {
@@ -427,6 +459,90 @@ body {
 .task form {
     display: inline-block;
 }
+
+/* Стили для модального окна */
+/* Стили для модального окна */
+.modal {
+    display: block;
+    position: fixed; /* Изменено на fixed */
+    z-index: 102;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.4); /* Прозрачный черный цвет фона */
+}
+
+/* Стили для содержимого модального окна */
+.modal-content {
+    background-color: rgba(255, 255, 255, 0.4);;
+    margin: auto;
+    padding: 20px;
+    border: 2px solid #000000; /* Обводка */
+    border-radius: 10px;
+    width: 80%; /* Ширина содержимого модального окна */
+    max-width: 500px; /* Максимальная ширина */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Тень */
+    position: absolute;
+    top: 50%; /* Перемещаем содержимое на половину высоты */
+    left: 50%; /* Перемещаем содержимое на половину ширины */
+    transform: translate(-50%, -50%); /* Смещаем содержимое обратно на половину его ширины и высоты */
+}
+
+/* Стили для кнопок в модальных окнах */
+.modal-content button[type="submit"],
+.modal-content input[type="submit"] {
+    width: 100%;
+    padding: 10px;
+    margin-top: 30px; /* Было 10px, теперь 30px */
+    border: none;
+    border-radius: 5px;
+    background-color: #021375;
+    color: #fff;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+/* Опциональный стиль для кнопок при наведении */
+.modal-content button[type="submit"]:hover,
+.modal-content input[type="submit"]:hover {
+    background-color: #000728;
+}
+
+/* Стили для полей ввода в модальных окнах */
+.modal-content input[type="text"],
+.modal-content input[type="date"],
+.modal-content textarea,
+.modal-content select {
+    width: 100%;
+    padding: 10px;
+    margin-top: 30px; /* Было 10px, теперь 30px */
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    box-sizing: border-box;
+}
+
+/* Стили для закрытия модальных окон */
+.close {
+    color: #aaa;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+}
+
+
 
 /* Стили для экранов Full HD (1920px) и меньше */
 @media screen and (max-width: 1920px) {
