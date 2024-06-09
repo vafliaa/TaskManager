@@ -71,10 +71,6 @@ public class TaskController {
 
             // Получаем список всех задач по groupId
             List<Task> tasks = taskService.getTasksByGroupId(groupId);
-            // Создаем список для хранения имен исполнителей
-            List<String> executorNames = new ArrayList<>();
-            // Получаем список поручителей для каждой задачи в группе
-            List<String> guarantorNames = new ArrayList<>();
             // Создаем список для хранения дат создания задач
             List<Date> taskCreatedAtList = new ArrayList<>();
 
@@ -183,7 +179,6 @@ public class TaskController {
         return "redirect:/";
     }
 
-    // Закончить ошибка с заполнением полей guarantorId
     @PostMapping("/task/create")
     public String createTask(@RequestParam("assignee") String assigneeName,
                              @RequestParam("taskText") String taskText,
@@ -191,36 +186,29 @@ public class TaskController {
                              @RequestParam("groupId") Long groupId,
                              HttpSession session,
                              Model model) {
-        // Получаем id пользователя по его имени (исполнитель)
         Long executorId = userService.findUserIdByUsername(assigneeName);
         if (executorId == null) {
-            // Обработка случая, если пользователь (исполнитель) не найден
             return "errorPage";
         }
 
-        // Получаем id пользователя по его идентификатору в сессии (гарант)
         String loggedInUsername = (String) session.getAttribute("loggedInUser");
         Long guarantorId = userService.findUserIdByUsername(loggedInUsername);
         if (guarantorId == null) {
-            // Обработка случая, если пользователь (гарант) не найден
             return "errorPage";
         }
 
-        // Создаем новую задачу
         Task task = new Task();
         task.setIdGroup(groupId);
         task.setGuarantorId(guarantorId);
         task.setExecutorId(executorId);
         task.setDescription(taskText);
-        task.setStatusId(1L); // 1L соответствует статусу "Не начато"
+        task.setStatusId(1L);
         task.setDeadline(deadline);
         task.setCreatedDate(new Date());
-        // Создаем задачу с помощью сервиса
         taskService.createTask(task);
 
         model.addAttribute("task", task);
 
-        // Перенаправляем пользователя на страницу с задачами для текущей группы
         return "redirect:/taskPage?groupId=" + groupId;
     }
 
@@ -304,19 +292,11 @@ public class TaskController {
         if (loggedInUsername != null) {
             User owner = userRepository.findByUsername(loggedInUsername);
             if (owner != null) {
-                String groupCode = UUID.randomUUID().toString(); // Генерируем уникальный код для группы
+                String groupCode = UUID.randomUUID().toString();
                 Group group = new Group(groupName, owner, groupCode);
-
-                // Добавляем созданную группу в список групп пользователя
                 owner.getGroups().add(group);
-
-                // Добавляем владельца в участники группы
                 group.getMembers().add(owner);
-
-                // Сохраняем созданную группу
                 groupRepository.save(group);
-
-                // Сохраняем обновленного пользователя
                 userRepository.save(owner);
             }
         }
